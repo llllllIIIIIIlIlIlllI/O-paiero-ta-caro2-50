@@ -7,7 +7,15 @@ public class ContaBancaria {
         this.clienteTitular = clienteTitular;
         this.saldo = saldo;
     }
-    /// Aqui fica a função de depositar, o saldo só consegue ser acessado depositando ou sacando "dinheiro".
+    /// Aqui eu criei um metódo para setar o saldo no programa.
+    double SetSaldo(double SaldoFinal){
+        if (saldo >= 0) {
+            saldo = SaldoFinal;
+        } else {
+            System.out.println("Saldo inválido.");
+        } return SaldoFinal;
+    }
+    /// Aqui fica a função de depositar, o saldo só consegue ser acessado depositando ou sacando "dinheiro", ou usando a função de set.
     double Depositar (double valor) {
         saldo += valor;
         return valor;
