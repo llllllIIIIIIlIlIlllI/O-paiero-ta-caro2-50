@@ -1,9 +1,8 @@
 package BancoDigital1603;
 
 public class ContaBancaria {
-    String numeroConta;
-    double saldo;
-    Cliente cliente;
-    
-    }
+    private String numeroConta;
+    private double saldo;
+    private Cliente cliente;
+
 }
