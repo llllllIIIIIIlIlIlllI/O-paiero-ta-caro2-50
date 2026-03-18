@@ -1,13 +1,11 @@
 package BancoDigital1603;
 
 public class Telas {
+        Cliente cliente;
 
-        private Cliente cliente;
-
-        public Telas (Cliente cliente) {
+        public Telas(Cliente cliente) {
                 this.cliente = cliente;
         }
-
 
         public static void MenuPrincipal() {
                 System.out.println("=== MENU PRINCIPAL ===");

@@ -5,12 +5,6 @@ public class Cliente {
     private String cpf;
     private String dataNascimento;
 
-    public Cliente(String nome, String cpf, String dataNascimento) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.dataNascimento = dataNascimento;
-    }
-
     // Fazendo os getters.
     public String getNome() {
         return nome;
