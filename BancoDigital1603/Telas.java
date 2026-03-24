@@ -7,7 +7,7 @@ public class Telas {
         private static final Scanner sc = new Scanner(System.in);
 
         public Telas(Cliente cliente) {
-                this.cliente = cliente;
+                this.cliente = new Cliente();
         }
 
         public static String lerTexto(String label) {
@@ -24,7 +24,7 @@ public class Telas {
                 }
         }
 
-        public void mostrarMensagem(String msg) {
+        public static void mostrarMensagem(String msg) {
                 System.out.println(msg);
         }
 

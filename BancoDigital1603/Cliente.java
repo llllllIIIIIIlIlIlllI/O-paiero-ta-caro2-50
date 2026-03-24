@@ -6,7 +6,7 @@ public class Cliente {
     private String nome;
     private String cpf;
     private String dataNascimento;
-    private String numeroconta;
+    private String numeroConta;
     private String senha;
     private double saldo;
     private boolean bloqueada;
@@ -20,7 +20,7 @@ public class Cliente {
     }
 
     public String getNumeroConta() {
-        return numeroconta;
+        return numeroConta;
     }
 
     public String getSenha() {
@@ -48,14 +48,15 @@ public class Cliente {
     }
 
     // Fazendo os setters.
-    public void setNome(String nome) {
+    public boolean setNome(String nome) {
         /// Fiz essa validação aqui, com ajuda do chatgpt, porém entendi a lógica, caso
         /// nome for nulo ou os espaços do nome forem empty, vai avisar que o nome não
         /// pode ser vazio, ou nulo.
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser vazio, ou nulo.");
+        if (nome == null || nome.trim().split("\\s+").lengt < 2) {
+            return false;
         }
-        this.nome = nome;
+        this.nome = nome.trim();
+        return true;
     }
 
     /// Aqui vai validar o cpf, pra ver se ele realmente existe e está no padrão
