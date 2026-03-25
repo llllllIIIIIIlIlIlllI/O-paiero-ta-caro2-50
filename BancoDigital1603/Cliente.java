@@ -1,11 +1,17 @@
 package BancoDigital1603;
-
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Cliente {
+    private static final int IDADE_MINIMA = 16;
+    private static final int ANO_MINIMO = 1900;
+    DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private String nome;
     private String cpf;
-    private String dataNascimento;
+    private LocalDate dataNascimento;
     private String numeroConta;
     private String senha;
     private double saldo;
@@ -43,7 +49,7 @@ public class Cliente {
         return cpf;
     }
 
-    public String getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
@@ -66,8 +72,26 @@ public class Cliente {
     }
 
     /// Aqui irá validar pra ver se a data realmente existe, se ela é válida, etc...
-    public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public boolean setDataNascimento(String data) {
+        if (data == null) 
+            return false;
+        try {
+            LocalDate hoje = LocalDate.now();
+            LocalDate dataNascimento = LocalDate.parse(data, formatador);
+            
+
+            if (dataNascimento.getYear() < ANO_MINIMO)
+                return false;
+
+            LocalDate idadeMinima = hoje.minusYears(IDADE_MINIMA);
+            if (dataNascimento.isAfter(idadeMinima)) {
+                return false;
+            }
+            this.dataNascimento = dataNascimento;
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     public void setSenha(String senha) {
