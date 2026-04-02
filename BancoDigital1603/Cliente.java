@@ -1,14 +1,16 @@
-package BancoDigital1603;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
+import java.time.format.ResolverStyle;
 
 public class Cliente {
+
     private static final int IDADE_MINIMA = 16;
     private static final int ANO_MINIMO = 1900;
-    DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter formatador = DateTimeFormatter
+    .ofPattern("dd/MM/uuuu")
+    .withResolverStyle(ResolverStyle.STRICT);
+
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
@@ -17,20 +19,27 @@ public class Cliente {
     private double saldo;
     private boolean bloqueada;
     private int tentativasFalhas;
+    private Conta conta;
 
-    Scanner sc = new Scanner(System.in);
+    // GETTERS
 
-    // Fazendo os getters.
     public String getNome() {
         return nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getDataNascimento() {
+        return dataNascimento.format(formatador);
     }
 
     public String getNumeroConta() {
         return numeroConta;
     }
-
-    public String getSenha() {
-        return senha;
+    public double getSaldo() {
+        return saldo;
     }
 
     public boolean isBloqueada() {
@@ -41,52 +50,43 @@ public class Cliente {
         return tentativasFalhas;
     }
 
-    public double getSaldo() {
-        return saldo;
-    }
+    // SETTERS
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    // Fazendo os setters.
     public boolean setNome(String nome) {
-        /// Fiz essa validação aqui, com ajuda do chatgpt, porém entendi a lógica, caso
-        /// nome for nulo ou os espaços do nome forem empty, vai avisar que o nome não
-        /// pode ser vazio, ou nulo.
-        if (nome == null || nome.trim().split("\\s+").lengt < 2) {
+        if (nome == null || nome.trim().split("\\s+").length < 2) {
             return false;
         }
         this.nome = nome.trim();
         return true;
     }
 
-    /// Aqui vai validar o cpf, pra ver se ele realmente existe e está no padrão
-    /// correto brasileiro atual.
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public boolean setCpf(String cpf) {
+        if (cpf == null) {
+            return false;
+        }
+        String cpfLimpo = cpf.replaceAll("[^0-9]", "");
+        if (!ValidaCPF.isCPF(cpfLimpo)) {
+            return false;
+        }
+        this.cpf = cpfLimpo;
+        return true;
     }
 
-    /// Aqui irá validar pra ver se a data realmente existe, se ela é válida, etc...
     public boolean setDataNascimento(String data) {
-        if (data == null) 
+        // Valida se data existe e se o cliente tem idade mínima
+        if (data == null)
             return false;
         try {
-            LocalDate hoje = LocalDate.now();
             LocalDate dataNascimento = LocalDate.parse(data, formatador);
-            
+            LocalDate hoje = LocalDate.now();
 
             if (dataNascimento.getYear() < ANO_MINIMO)
                 return false;
 
             LocalDate idadeMinima = hoje.minusYears(IDADE_MINIMA);
-            if (dataNascimento.isAfter(idadeMinima)) {
+            if (dataNascimento.isAfter(idadeMinima))
                 return false;
-            }
+
             this.dataNascimento = dataNascimento;
             return true;
         } catch (DateTimeParseException e) {
@@ -94,28 +94,52 @@ public class Cliente {
         }
     }
 
-    public void setSenha(String senha) {
+    public boolean setSenha(String senha) {
+        if (senha == null || !senha.matches("\\d{4}")) {
+            return false;
+        }
         this.senha = senha;
+        return true;
     }
 
-    public void registrarTentativasFalhas() {
-        while (tentativasFalhas < 5) {
-            System.out.print("Digite aqui sua senha: ");
-            String senhaInformada = sc.next();
-            if (senhaInformada.equals(senha)) {
-                System.out.println("Senha correta.");
-                tentativasFalhas = 0;
-                bloqueada = false;
-                return;
-            } else if (!senhaInformada.equals(senha)) {
-                tentativasFalhas += 1;
-                System.out.println("Senha incorreta.");
-                if (tentativasFalhas == 3) {
-                    System.out.println("Sua conta foi bloqueada, para desbloquear vá até uma agência da instituição.");
-                    bloqueada = true;
-                    break;
-                }
-            }
+    /* Define o número da conta (atribuído pela CentralBancaria). */
+    public void setNumeroConta(String numeroConta) {
+        this.numeroConta = numeroConta;
+    }
+
+    /* Atualiza o saldo (atribuído pela CentralBancaria após operações). */
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    /* Permite bloquear ou desbloquear a conta manualmente. */
+    public void setBloqueada(boolean bloqueada) {
+        this.bloqueada = bloqueada;
+    }
+
+    // MÉTODOS DE NEGÓCIO
+
+    /*
+     * Registra uma tentativa de login com senha errada.
+     * Bloqueia automaticamente ao atingir 3 erros consecutivos.
+     */
+    public void registrarTentativaFalha() {
+        this.tentativasFalhas++;
+        if (this.tentativasFalhas >= 3) {
+            this.bloqueada = true;
         }
+    }
+
+    /* Zera o contador após login bem-sucedido. */
+    public void resetarTentativasFalhas() {
+        this.tentativasFalhas = 0;
+    }
+
+    /*
+     * Verifica senha sem expô-la: a comparação fica dentro da própria classe.
+     * Isso é encapsulamento — a senha nunca sai do objeto.
+     */
+    public boolean verificarSenha(String senhaInformada) {
+        return this.senha != null && this.senha.equals(senhaInformada);
     }
 }

@@ -1,34 +1,26 @@
-package BancoDigital1603;
-
-import java.util.Scanner;
-
 public class Main {
-    public static void main(String[] args) {
-        Cliente cliente = new Cliente();
-        Telas telas = new Telas(cliente);
-        Controlador controlador = new Controlador(cliente, telas);
-        int opcao = 0;
-        do {
-            Telas.MenuPrincipal();
-            opcao = Telas.lerOpcao();
-            switch (opcao) {
 
+    public static void main(String[] args) {
+        int opcao;
+
+        do {
+            Telas.menuPrincipal();
+            opcao = Telas.lerOpcao();
+
+            switch (opcao) {
                 case 1:
-                    controlador.CriarConta();
-                    System.out.println("WIP");
+                    Controlador.criarConta();
                     break;
                 case 2:
-                    /// Lógica de acessar conta
-                    System.out.println("WIP");
+                    Controlador.acessarConta();
                     break;
                 case 3:
-                    System.out.println("Saindo...");
+                    Telas.mensagem("Encerrando. Até logo!", false);
                     break;
                 default:
-                    System.out.println("Opção inválida");
-                    System.out.println(opcao);
-                    break;
+                    Telas.mensagem("Opção inválida. Tente novamente.", true);
             }
+
         } while (opcao != 3);
     }
 }
