@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplo HTML Semântico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      color: #222;
+    }
+
+    header,
+    footer {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #2a6cb0;
+    }
+
+    section {
+      margin: 24px 0;
+      padding: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 8px 16px;
+      background: #2a6cb0;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4f85;
+    }
+
+    #saudacao {
+      font-weight: bold;
+      color: #2a6cb0;
+    }
+
+    ul#historico {
+      padding-left: 20px;
+    }
+
+    aside {
+      font-size: 0.9em;
+      color: #555;
+      background: #f7f7f7;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Bem-vindo!</h1>
+    <nav>
+      <ul>
+        <li><a href="#cadastro">Cadastro</a></li>
+        <li><a href="#historico-section">Histórico</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <p>Digite seu nome no campo abaixo e clique no botão para ser saudado.</p>
+
+      <section id="cadastro">
+        <h2>Cadastro</h2>
+        <form id="form-nome" action="https://webhook.site/8c09048e-fa2e-46b5-8c4f-c7dcfad941f8" method="POST">
+          <label for="nome">Nome:</label>
+          <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required />
+          <!-- <label for="senha">Senha:</label>
+          <input type="password" name="senha" id="senha" placeholder="Digite sua senha:" required /> -->
+          <button type="submit" id="confirmar">Confirmar</button>
+        </form>
+        <p id="saudacao"></p>
+      </section>
+
+      <section id="historico-section">
+        <h2>Histórico de saudações</h2>
+        <ul id="historico"></ul>
+      </section>
+    </article>
+
+    <aside id="sobre">
+      <p><strong>Sobre:</strong> este exemplo usa tags semânticas (<code>header</code>, <code>nav</code>,
+        <code>main</code>, <code>article</code>, <code>section</code>, <code>aside</code>, <code>footer</code>) e
+        JavaScript para manipular o DOM.
+      </p>
+    </aside>
+  </main>
+
+  <footer>
+    <p>Exemplo de Manipulação do DOM.</p>
+  </footer>
+
+  <script>
+    console.log("Script executado com sucesso");
+    const form = document.querySelector('#form-nome');
+    const historico = document.querySelector('#historico');
+    const saudacao = document.querySelector('#saudacao');
+
+    form.addEventListener("submit", function (event) {
+      // Evita o recarregamento da página
+      event.preventDefault();
+
+      const campoNome = document.querySelector("#nome");
+      const nomeDigitado = campoNome.value.trim();
+
+      if (nomeDigitado === "") {
+        saudacao.textContent = "Por favor, digite seu nome!";
+        return;
+      }
+
+      // 1. Define o texto de saudação principal
+      const mensagem = `Olá, ${nomeDigitado}!`;
+      saudacao.textContent = mensagem;
+
+      // 2. Cria um novo elemento <li> de forma dinâmica
+      const novoItem = document.createElement("li");
+      novoItem.textContent = mensagem; // Define o texto do item da lista
+
+      // 3. Adiciona o novo <li> dentro do <ul> (histórico) sem apagar os anteriores
+      historico.appendChild(novoItem);
+
+      // Opcional: Limpa o campo de texto para a próxima digitação
+      campoNome.value = "";
+    });
+  </script>
+</body>
+
+</html>
