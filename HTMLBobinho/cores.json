@@ -1,0 +1,34 @@
+[
+    {
+        "nome": "Amarelo",
+        "hexadecimal": "#f6ff00"
+    },
+    {
+        "nome": "Azul",
+        "hexadecimal": "#0000ff"
+    },
+    {
+        "nome": "Cinza",
+        "hexadecimal": "#808080"
+    },
+    {
+        "nome": "Laranja",
+        "hexadecimal": "#ffa500"
+    },
+    {
+        "nome": "Preto",
+        "hexadecimal": "#000000"
+    },
+    {
+        "nome": "Rosa",
+        "hexadecimal": "#ffc0cb"
+    },
+    {
+        "nome": "Roxo",
+        "hexadecimal": "#800080"
+    },
+    {
+        "nome": "Verde",
+        "hexadecimal": "#008000"
+    }
+]
